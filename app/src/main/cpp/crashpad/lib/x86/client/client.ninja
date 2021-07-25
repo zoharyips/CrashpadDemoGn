@@ -1,0 +1,16 @@
+defines = -DNDEBUG -DCRASHPAD_ZLIB_SOURCE_SYSTEM -DCRASHPAD_LSS_SOURCE_EMBEDDED
+framework_dirs =
+include_dirs = -I../.. -I../../third_party/mini_chromium/mini_chromium -Igen -I../../compat/linux -I../../compat/android -I../../compat/non_win
+cflags = -Wall -Wendif-labels -Werror -Wextra -Wextra-semi -Wheader-hygiene -Wnewline-eof -Wno-missing-field-initializers -Wno-unused-parameter -Wsign-compare -Wstring-conversion -Wvla -fno-exceptions -fno-rtti -fno-strict-aliasing -fobjc-call-cxx-cdtors -fstack-protector-all -fvisibility-inlines-hidden -fvisibility=hidden -fPIC -O3 -fdata-sections -ffunction-sections -Wexit-time-destructors -Wimplicit-fallthrough
+cflags_cc = -std=c++14
+label_name = client
+target_output_name = libclient
+
+build obj/client/client.prune_crash_reports.o: cxx ../../client/prune_crash_reports.cc || obj/third_party/mini_chromium/mini_chromium/build/chromeos_buildflags.stamp
+build obj/client/client.crashpad_client_linux.o: cxx ../../client/crashpad_client_linux.cc || obj/third_party/mini_chromium/mini_chromium/build/chromeos_buildflags.stamp
+build obj/client/client.client_argv_handling.o: cxx ../../client/client_argv_handling.cc || obj/third_party/mini_chromium/mini_chromium/build/chromeos_buildflags.stamp
+
+build obj/client/libclient.a: alink obj/client/client.prune_crash_reports.o obj/client/client.crashpad_client_linux.o obj/client/client.client_argv_handling.o || obj/client/libcommon.a obj/third_party/mini_chromium/base.stamp obj/util/libutil.a obj/third_party/mini_chromium/chromeos_buildflags.stamp obj/third_party/lss/lss.stamp obj/third_party/mini_chromium/mini_chromium/base/libbase.a obj/third_party/mini_chromium/mini_chromium/build/build.stamp obj/util/no_cfi_icall.stamp obj/compat/libcompat.a obj/third_party/zlib/zlib.stamp
+  arflags =
+  output_extension = .a
+  output_dir = obj/client
